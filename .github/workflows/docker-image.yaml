@@ -4,7 +4,7 @@ name: Docker Image CI
 
 on:
   push:
-  #  branches: [ $default-branch ]
+    branches: [ $default-branch ]
   pull_request:
     branches: [ $default-branch ]
 
@@ -15,9 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - run: echo "Checked out branch ${{ github.ref }} on ${{ github.repository }}"
-    
+    - uses: actions/checkout@v2    
     - name: Build Docker image
       run: |
         ls ${{ github.workspace }} && cd python/docker
