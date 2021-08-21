@@ -15,6 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout Code
     - uses: actions/checkout@v2
-    - name: Build the Docker image
+      run: echo "Checked out branch ${{ github.ref }} on ${{ github.repository }}"
       run: docker build ./python/docker --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Build Docker container
+      run: |
+        ls ${{ github.workspace }} && cd python/docker
+      run: docker build . --tag my-image-name:$(date +%s)
+    - run: echo "🍏 This job's status is ${{ job.status }}."
