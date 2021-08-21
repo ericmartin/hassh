@@ -1,0 +1,23 @@
+# From https://github.com/actions/starter-workflows/blob/main/ci/docker-image.yml
+
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2    
+    - name: Build Docker image
+      run: |
+        cd python/docker
+        docker build . --tag my-image-name:$(date +%s)
+    - run: echo "🍏 This job's status is ${{ job.status }}."
