@@ -4,14 +4,21 @@
 
 [![Docker Image CI](https://github.com/ericmartin/hassh/actions/workflows/docker-image.yaml/badge.svg)](https://github.com/ericmartin/hassh/actions/workflows/docker-image.yaml)
 
-HASSH is a method for creating SSH Client and Server fingerprints. This python script generates HASSH fingerprints from input PCAP files and live network traffic.
+HASSH is a method for creating SSH Client and Server fingerprints.
+This python script generates HASSH fingerprints from input PCAP files and live
+network traffic.
 
-You can use [hasshGen.py](hasshGen/) to automate building docker images with different SSH clients/versions for generating HASSH fingerprints. As a demonstration we created a list ([sshClient_list](hasshGen/sshClient_list)) containing 49 different version of OpenSSH, Python’s paramiko and Dropbear SSH clients and generated a database of HASSH fingerprints in [JSON](hasshGen/hassh_fingerprints.json) and [CSV](hasshGen/hassh_fingerprints.csv) formats.
+You can use [hasshGen.py](hasshGen/) to automate building docker images with
+different SSH clients/versions for generating HASSH fingerprints. As a
+demonstration we created a list ([sshClient_list](hasshGen/sshClient_list))
+containing 49 different version of OpenSSH, Python’s paramiko and Dropbear SSH
+clients and generated a database of HASSH fingerprints in [JSON](hasshGen/hassh_fingerprints.json)
+and [CSV](hasshGen/hassh_fingerprints.csv) formats.
 
 ## Getting Started
 
 1. Install Tshark
-    > `apt-get install tshark` on Debian/Ubuntu or `yum install wireshark` on Centos 7
+    > `apt-get install tshark` on Debian/Ubuntu or `yum install wireshark` on Centos
 
 2. Install Pipenv:
     > `pip3 install pipenv`
@@ -75,7 +82,7 @@ optional arguments:
 * Live network traffic capture:
 
  ```shell
-    python3 hassh.py -i eth0 -l json -o hassh.json --print
+  python3 hassh.py -i eth0 -l json -o hassh.json --print
  ```
 
 Output:
@@ -128,10 +135,11 @@ JSON Output:
 }
 ```
 
-* Reading from an input PCAP file (```-r pcapfile.pcap```) or a directory of PCAP files (```-d pcap_dir/```):
+* Reading from an input PCAP file (```-r pcapfile.pcap```)
+  or a directory of PCAP files (```-d pcap_dir/```):
 
  ```shell
-    python3 hassh.py -r traffic.pcap -l csv -o hassh.csv --print
+  python3 hassh.py -r traffic.pcap -l csv -o hassh.csv --print
  ```
 
 CSV Output:
@@ -144,26 +152,30 @@ timestamp,sourceIp,destinationIp,sourcePort,destinationPort,hasshType,identifica
 
 ## Docker
 
-A dockerized version of hassh.py can be used to extract HASSH fingerprints from input PCAP files and live network traffic.
+A dockerized version of hassh.py can be used to extract HASSH fingerprints from
+input PCAP files and live network traffic.
 
 Build the docker image using Dockerfile:
 
  ```shell
-    docker build -t hassh:latest .
+  docker build -t hassh:latest .
  ```
 
 * Reading from input PCAP files:
 
-You can mount your host ~/pcap dir to copy pcap files to the container and also keep the logs on your host:
+You can mount your host ~/pcap dir to copy pcap files to the container and also
+keep the logs on your host:
 
  ```shell
-    docker run -v ~/pcap:/tmp/ -it hassh:latest -d /tmp/ -l json -o /tmp/log.json
+  docker run -v ~/pcap:/tmp/ -it hassh:latest -d /tmp/ -l json -o /tmp/log.json
  ```
 
 * Live network traffic capture:
 
  ```shell
-    docker run --net=host -it hassh:latest -i any --print
+  docker run --net=host -it hassh:latest -i any --print
  ```
 
-Note: According to Docker's [docs](https://docs.docker.com/network/host/), the host networking driver only works on Linux hosts, and is not supported on Docker for Mac, Docker for Windows, or Docker EE for Windows Server.
+Note: According to Docker's [docs](https://docs.docker.com/network/host/),
+the host networking driver only works on Linux hosts, and is not supported on
+Docker for Mac, Docker for Windows, or Docker EE for Windows Server.
