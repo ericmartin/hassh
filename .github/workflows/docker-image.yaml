@@ -1,6 +1,6 @@
 # From https://github.com/actions/starter-workflows/blob/main/ci/docker-image.yml
 
-name: Docker Image CI
+name: Docker Image Build
 
 on:
   push:
