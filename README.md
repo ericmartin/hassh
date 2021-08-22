@@ -12,7 +12,7 @@
 
 [![Docker Image CI](https://github.com/ericmartin/hassh/actions/workflows/docker-image.yaml/badge.svg)](https://github.com/ericmartin/hassh/actions/workflows/docker-image.yaml)
 
-[![Python package](https://github.com/ericmartin/hassh/actions/workflows/python-package.yaml/badge.svg?branch=master)](https://github.com/ericmartin/hassh/actions/workflows/python-package.yaml)
+[![Python Build](https://github.com/ericmartin/hassh/actions/workflows/python-package.yaml/badge.svg?branch=master)](https://github.com/ericmartin/hassh/actions/workflows/python-package.yaml)
 
 ## What can HASSH help with
 
