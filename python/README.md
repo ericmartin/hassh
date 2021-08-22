@@ -2,14 +2,16 @@
 
 [![License: BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
+[![Docker Image CI](https://github.com/ericmartin/hassh/actions/workflows/docker-image.yaml/badge.svg)](https://github.com/ericmartin/hassh/actions/workflows/docker-image.yaml)
+
 HASSH is a method for creating SSH Client and Server fingerprints. This python script generates HASSH fingerprints from input PCAP files and live network traffic.
 
 You can use [hasshGen.py](hasshGen/) to automate building docker images with different SSH clients/versions for generating HASSH fingerprints. As a demonstration we created a list ([sshClient_list](hasshGen/sshClient_list)) containing 49 different version of OpenSSH, Python’s paramiko and Dropbear SSH clients and generated a database of HASSH fingerprints in [JSON](hasshGen/hassh_fingerprints.json) and [CSV](hasshGen/hassh_fingerprints.csv) formats.
 
 ## Getting Started
-1. Install Tshark. 
+
+1. Install Tshark
     > `apt-get install tshark` on Debian/Ubuntu or `yum install wireshark` on Centos 7
-    
 
 2. Install Pipenv:
     > `pip3 install pipenv`
@@ -20,20 +22,21 @@ You can use [hasshGen.py](hasshGen/) to automate building docker images with dif
 4. Test:
 
 To activate the virtualenv, run pipenv shell:
-```
+
+```shell
 $ pipenv shell
 (python-ZnElGiuE) bash-3.2$ python3 hassh.py -h
 ```
 
 Alternatively, run a command inside the virtualenv with pipenv run:
 
-```
-$ pipenv run python3 hassh.py -h
+```shell
+pipenv run python3 hassh.py -h
 ```
 
 Output:
 
-```
+```shell
 usage: hassh.py [-h] [-r READ_FILE] [-d READ_DIRECTORY] [-i INTERFACE]
                 [-fp {client,server}] [-da DECODE_AS] [-f BPF_FILTER]
                 [-l {json,csv}] [-o OUTPUT_FILE] [-w WRITE_PCAP] [-p]
@@ -68,13 +71,16 @@ optional arguments:
 ```
 
 ## Usage
- * Live network traffic capture:
- ```
-    $ python3 hassh.py -i eth0 -l json -o hassh.json --print
+
+* Live network traffic capture:
+
+ ```shell
+    python3 hassh.py -i eth0 -l json -o hassh.json --print
  ```
 
 Output:
-```
+
+```shell
 [+] Server SSH_MSG_KEXINIT detected
     [ 192.1.2.3:22 -> 10.1.2.3:52068 ]
         [-] Identification String: SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.4
@@ -88,6 +94,7 @@ Output:
 ```
 
 JSON Output:
+
  ```javascript
 {
   "timestamp": "2018-09-04T18:57:03.644663",
@@ -121,14 +128,15 @@ JSON Output:
 }
 ```
 
-  * Reading from an input PCAP file (```-r pcapfile.pcap```) or a directory of PCAP files (```-d pcap_dir/```):
+* Reading from an input PCAP file (```-r pcapfile.pcap```) or a directory of PCAP files (```-d pcap_dir/```):
 
- ```
-    $ python3 hassh.py -r traffic.pcap -l csv -o hassh.csv --print
+ ```shell
+    python3 hassh.py -r traffic.pcap -l csv -o hassh.csv --print
  ```
 
 CSV Output:
-```
+
+```csv
 timestamp,sourceIp,destinationIp,sourcePort,destinationPort,hasshType,identificationString,hassh,hasshVersion,hasshAlgorithms,kexAlgs,encAlgs,macAlgs,cmpAlgs
 2018-09-04T18:57:03.642572,192.1.2.3,10.1.2.3,22,52068,server,"SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.4",d43d91bc39d5aaed819ad9f6b57b7348,1.0,"curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1;chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com;umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1;none,zlib@openssh.com","curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1","chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com","umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1","none,zlib@openssh.com"
 2018-09-04T18:57:03.644663,10.1.2.3,192.1.2.3,52068,22,client,"SSH-2.0-OpenSSH_7.6",06046964c022c6407d15a27b12a6a4fb,1.0,"curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,ext-info-c;chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com;umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1;none,zlib@openssh.com,zlib","curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,ext-info-c","chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com","umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1","none,zlib@openssh.com,zlib"
@@ -139,20 +147,23 @@ timestamp,sourceIp,destinationIp,sourcePort,destinationPort,hasshType,identifica
 A dockerized version of hassh.py can be used to extract HASSH fingerprints from input PCAP files and live network traffic.
 
 Build the docker image using Dockerfile:
- ```
-    $ docker build -t hassh:latest .
+
+ ```shell
+    docker build -t hassh:latest .
  ```
 
- * Reading from input PCAP files:
+* Reading from input PCAP files:
 
 You can mount your host ~/pcap dir to copy pcap files to the container and also keep the logs on your host:
- ```
-    $ docker run -v ~/pcap:/tmp/ -it hassh:latest -d /tmp/ -l json -o /tmp/log.json
+
+ ```shell
+    docker run -v ~/pcap:/tmp/ -it hassh:latest -d /tmp/ -l json -o /tmp/log.json
  ```
 
- * Live network traffic capture:
- ```
-    $ docker run --net=host -it hassh:latest -i any --print
+* Live network traffic capture:
+
+ ```shell
+    docker run --net=host -it hassh:latest -i any --print
  ```
 
 Note: According to Docker's [docs](https://docs.docker.com/network/host/), the host networking driver only works on Linux hosts, and is not supported on Docker for Mac, Docker for Windows, or Docker EE for Windows Server.
