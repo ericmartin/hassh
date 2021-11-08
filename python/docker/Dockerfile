@@ -16,7 +16,7 @@
 # Note: According to Docker's docs, the host networking driver only works on Linux hosts, and is not supported on Docker for Mac, Docker for Windows, or Docker EE for Windows Server.
 
 FROM alpine:latest
-MAINTAINER Adel Karimi (@0x4d31)
+LABEL MAINTAINER Eric Martin <eric@ericdoesinfosec.com>
 ENV DEBIAN_FRONTEND noninteractive
 RUN apk --no-cache add python3 gcc \
     py3-pip py3-lxml tshark \
