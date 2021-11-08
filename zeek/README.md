@@ -1,28 +1,48 @@
 # hassh.zeek
+
 [![License: BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 ## Features
-**hassh.zeek** by default will add these fields to your Zeek ssh.log file 
+
+**hassh.zeek** by default will add these fields to your Zeek ssh.log file
+
 - hasshVersion
-- hassh, hasshAlgorithms 
+- hassh, hasshAlgorithms
 - hasshServer, hasshServerAlgorithms
 - cshka (Client Host Key Algorithms), sshka (Server Host Key Algorithms)  
-- The script has been tested on Bro 2.5, 2.5.1, 2.5.5, 2.6.0, 2.6.1, 2.6.3, 3.0.0 and 3.1.2
-- Note that Zeek (formerly bro) versions < v2.6.0 had a bug which reversed the Client/server flag , see https://github.com/zeek/zeek/pull/191. The current version of the hassh.zeek script does version checking to deal with these version issues. Failure to update Zeek and not the hassh.zeek script will result in the Server and Client packets being processed incorrectly, in effect swapping around hassh with hassServer.  
+- The script has been tested on Bro 2.5, 2.5.1, 2.5.5, 2.6.0, 2.6.1, 2.6.3, 3.0.0
+    and 3.1.2
+- Note that Zeek (formerly bro) versions < v2.6.0 had a bug which reversed the
+    Client/server flag, see <https://github.com/zeek/zeek/pull/191>.
+    The current version of the hassh.zeek script does version checking to deal
+    with these version issues. Failure to update Zeek and not the hassh.zeek script
+    will result in the Server and Client packets being processed incorrectly,
+    in effect swapping around hassh with hassServer.  
 
 ## Installation
-Place hassh.zeek in zeek/share/zeek/site/hassh and add this line to your local.zeek script:
+
+Place hassh.zeek in zeek/share/zeek/site/hassh and add this line to your
+local.zeek script:
+
 ```bash
 @load ./hassh
 ```
-If running Zeek >=2.5 or a Zeek product like Corelight, install by using the Zeek Package Manager with this command:
-```bash 
+
+If running Zeek >=2.5 or a Zeek product like Corelight, install by using the
+Zeek Package Manager with this command:
+
+```bash
 zkg install hassh
 ```
 
-
 ## Configuration
-**hassh.zeek** by default will add these fields to your Zeek ssh.log file: ```hasshVersion, hassh, hasshAlgorithms, hasshServer and hasshServerAlgorithms, cshka, sshka.``` If you don't want some of these fields to be logged, simply comment those field lines out in each of the locations within hassh.zeek as shown in the code blocks below.
+
+**hassh.zeek** by default will add these fields to your Zeek ssh.log file:
+```hasshVersion, hassh, hasshAlgorithms, hasshServer and hasshServerAlgorithms, cshka, sshka.```
+If you don't want some of these fields to be logged, simply comment those field
+lines out in each of the locations within hassh.zeek as shown in the code blocks
+below.
+
 ```bash
 redef record SSH::Info += {
     hasshVersion:  string  &log &optional;
@@ -50,6 +70,7 @@ redef record SSH::Info += {
     hasshServerAlgorithms:  string  &log &optional;
 };
 ```
+
 ```bash
     if ( capabilities$is_server == T ) {
         get_hassh(c, capabilities);
@@ -83,12 +104,20 @@ redef record SSH::Info += {
     }
 ```
 
-After ammending the Zeek script, don't forget to reload Zeek. 
+After ammending the Zeek script, don't forget to reload Zeek.
+
 ```bash
 zeekctl stop
 zeekctl install
 zeekctl start
 ```
 
-## Credits:
-HASSH was conceived and developed by [Ben Reardon](mailto:breardon@salesforce.com) (@benreardon) within the Detection Cloud Team at Salesforce, with inspiration and contributions from [Adel Karimi](mailto:akarimishiraz@salesforce.com) (@0x4d31) and the [JA3 crew](https://github.com/salesforce/ja3/)  crew:[John B. Althouse](mailto:jalthouse@salesforce.com)  , [Jeff Atkinson](mailto:jatkinson@salesforce.com) and [Josh Atkins](mailto:j.atkins@salesforce.com)
+## Credits
+
+HASSH was conceived and developed by
+[Ben Reardon](mailto:breardon@salesforce.com) (@benreardon) within
+the Detection Cloud Team at Salesforce, with inspiration and contributions from
+[Adel Karimi](mailto:akarimishiraz@salesforce.com) (@0x4d31)
+and the [JA3 crew](https://github.com/salesforce/ja3/) crew:[John B. Althouse](mailto:jalthouse@salesforce.com),
+[Jeff Atkinson](mailto:jatkinson@salesforce.com)
+and [Josh Atkins](mailto:j.atkins@salesforce.com)

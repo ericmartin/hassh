@@ -4,14 +4,16 @@
 # Licensed under the BSD 3-Clause license.
 # For full license text, see the LICENSE file in the repo root
 # or https://opensource.org/licenses/BSD-3-Clause
-
+'''
+A python script for extracting HASSH fingerprints
+'''
 import argparse
-import pyshark
-import os
+from hashlib import md5
 import json
 import logging
+import os
 import textwrap
-from hashlib import md5
+import pyshark
 
 __author__ = "Adel '0x4D31' Karimi"
 __email__ = "akarimishiraz@salesforce.com"

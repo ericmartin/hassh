@@ -4,12 +4,13 @@
 # Licensed under the BSD 3-Clause license.
 # For full license text, see the LICENSE file in the repo root
 # or https://opensource.org/licenses/BSD-3-Clause
-
+'''Create Docker containers to generate various hasshes'''
 import argparse
 import json
-import docker
-import time
 from subprocess import Popen
+import time
+
+import docker
 
 __author__ = "Adel '0x4D31' Karimi"
 __email__ = "akarimishiraz@salesforce.com"
@@ -71,14 +72,14 @@ def command_exec(container, server, ssh_client, rm):
         cmd = 'python /tmp/paramiko_conn.py {}'.format(server)
     try:
         client.containers.run(container, command=cmd)
-    except Exception as e:
-        errorMsg = str(e)
+    except Exception as my_error:
+        error_msg = str(my_error)
         pass
-    if ('Permission denied' in errorMsg or 'paramiko.ssh_exception' in errorMsg
-            or 'dbclient: Connection' in errorMsg):
+    if ('Permission denied' in error_msg or 'paramiko.ssh_exception' in error_msg
+            or 'dbclient: Connection' in error_msg):
         out = "[+] Command successfully executed!"
     else:
-        out = "[-] Error: {}".format(errorMsg)
+        out = "[-] Error: {}".format(error_msg)
     # Delete the image
     if rm:
         client.images.remove(image=container, force=True, noprune=True)
@@ -97,7 +98,7 @@ def main():
                 version='auto')
 
     if args.input_file:
-        with open(args.input_file) as file:
+        with open(args.input_file,encoding='UTF-8') as file:
             input_list = json.load(file)
         # Run hassh.py
         proc = None
@@ -139,8 +140,8 @@ def main():
                     container, args.server, record['sshclient'], rm=False)
                 if out:
                     print(out)
-            except Exception as e:
-                print("[-] Error:", e)
+            except Exception as my_error:
+                print("[-] Error:", my_error)
         # One more command_exec to make sure all captured (bug)
         command_exec(container, args.server, record['sshclient'], rm=True)
         # Kill hassh.py
@@ -184,8 +185,8 @@ def main():
             # Kill hassh.py
             if proc:
                 proc.kill()
-        except Exception as e:
-            print("[-] Error:", e)
+        except Exception as my_error:
+            print("[-] Error:", my_error)
 
 
 if __name__ == '__main__':

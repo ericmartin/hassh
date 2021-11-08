@@ -1,7 +1,8 @@
 .DS_Store
+*.cap
+*.log
 *.pcap
 *.pcapng
-*.cap
 *.swp
 __pycache__
 .pytest_cache
