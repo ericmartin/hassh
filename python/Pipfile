@@ -11,9 +11,9 @@ name = "pypi"
 
 [packages]
 
-pyshark = "==0.4.1"
+pyshark = ">=0.4.1"
 
 
 [requires]
 
-python_version = "3.7"
+python_version = ">=3.7"
